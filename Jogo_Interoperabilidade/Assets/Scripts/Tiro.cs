@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Tiro : MonoBehaviour
@@ -8,8 +9,17 @@ public class Tiro : MonoBehaviour
     Rigidbody2D rig;
     public GameObject ponto;
     public GameObject arm;
-    public Vector3 direction;
+
+    public Transform imagemForca;
+
+    public TMP_Text textJogador;
+    public string nomeJogador;
+
+    private Vector3 direction;
     public float force;
+
+    public KeyCode teclaTiro;
+    
 
     public float[] minMax = new float[2];
 
@@ -20,6 +30,7 @@ public class Tiro : MonoBehaviour
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
+        
     }
 
     
@@ -43,12 +54,13 @@ public class Tiro : MonoBehaviour
             
         }
         
-        if(Input.GetKey(KeyCode.B))
+        if(Input.GetKey(KeyCode.F))
         {
 
             if(diminui == false)
             {
-                force += Time.fixedDeltaTime * 0.01f;
+                force += Time.fixedDeltaTime *10f;
+                imagemForca.transform.localScale += new Vector3(force / 1000f,0,0);
                 if(force > minMax[1])
                 {
                     diminui = true;
@@ -56,7 +68,8 @@ public class Tiro : MonoBehaviour
             }
             if (diminui == true)
             {
-                force -= Time.fixedDeltaTime * 0.01f;
+                force -= Time.fixedDeltaTime * 10f;
+                imagemForca.transform.localScale -= new Vector3(force / 1000f, 0, 0);
                 if (force < minMax[0])
                 {
                     diminui = false;
@@ -66,22 +79,56 @@ public class Tiro : MonoBehaviour
 
         }
 
-        if (Input.GetKey(KeyCode.V))
+        if (Input.GetKey(teclaTiro))
         {
-            atirou = true;
-            transform.position = arm.transform.position;
-            direction =  transform.position - ponto.transform.position;
+            if (atirou == false)
+            {
+                transform.position = arm.transform.position;
+                direction = transform.position - ponto.transform.position;
+
+                rig.AddForce(new Vector2(-direction.normalized.x * force, -direction.normalized.y * force), ForceMode2D.Impulse);
+
+                force = minMax[0];
+                imagemForca.transform.localScale = new Vector3(0.1f, 0.2f, 1);
+                atirou = true;
+            }
             
-            rig.AddForce(new Vector2(-direction.normalized.x * force, -direction.normalized.y * force),ForceMode2D.Impulse);
-
-            force = minMax[0];
-
         }
 
 
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag(nomeJogador))
+        {
 
+            textJogador.text = "Acertou";
+            SetPositionTiro();
+
+
+        }
+        else
+        {
+            if (collision.gameObject.CompareTag("Jogador1") || collision.gameObject.CompareTag("Jogador2"))
+            {
+
+            }
+            else
+            {
+                textJogador.text = "Errou";
+                SetPositionTiro();
+            }
+        }
+
+    }
+
+    public void SetPositionTiro()
+    {
+
+        transform.position = new Vector3(1000, 1000,0);
+        atirou = false;
+    }
             
 
 

@@ -2,32 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player2 : MonoBehaviour
 {
-
     Rigidbody2D rig;
-    
-    
+
+
     public GameObject armTank;
-    
+
     float angle = 0;
-    
+
     public float speed = 10;
 
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
-        
+
     }
 
-   
+
     void Update()
     {
 
 
+
+
+
         movimentacao();
         ArmMovimento();
-
     }
 
     private void movimentacao()
@@ -45,29 +46,25 @@ public class Player : MonoBehaviour
     private void ArmMovimento()
     {
 
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.O))
         {
-            if (angle < 90)
+            if (angle > -90)
             {
-                angle += 100 * Time.deltaTime;
-                armTank.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-            }
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            if (angle > 0)
-            {
-              
                 angle -= 100 * Time.deltaTime;
                 armTank.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            }
+        }
+        if (Input.GetKey(KeyCode.L))
+        {
+            if (angle < 0)
+            {
+
+                angle += 100 * Time.deltaTime;
+                armTank.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
             }
         }
 
-       
+
     }
-
-
-    
-
 }
