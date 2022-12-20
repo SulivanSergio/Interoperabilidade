@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Jogador1
   - Jogador2
+  - Paredes
   layers:
   - Default
   - TransparentFX

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -14,20 +15,25 @@ public class Player : MonoBehaviour
     
     public float speed = 10;
 
+    public Json json;
+    public TMP_Text erro;
+
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
+        json = new Json(erro);
         
     }
 
    
     void Update()
     {
-
-
-        movimentacao();
-        ArmMovimento();
-
+        json.Load();
+        if (json.turno == -1)
+        {
+            movimentacao();
+            ArmMovimento();
+        }
     }
 
     private void movimentacao()

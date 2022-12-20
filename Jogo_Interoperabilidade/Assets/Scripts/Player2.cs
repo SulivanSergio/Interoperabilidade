@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Player2 : MonoBehaviour
@@ -13,10 +14,13 @@ public class Player2 : MonoBehaviour
 
     public float speed = 10;
 
+    public Json json;
+    public TMP_Text erro;
+
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
-
+        json = new Json(erro);
     }
 
 
@@ -24,20 +28,22 @@ public class Player2 : MonoBehaviour
     {
 
 
+        json.Load();
 
-
-
-        movimentacao();
-        ArmMovimento();
+        if (json.turno == 1)
+        {
+            movimentacao();
+            ArmMovimento();
+        }
     }
 
     private void movimentacao()
     {
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
             rig.velocity += new Vector2(speed * Time.deltaTime, 0);
         }
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
             rig.velocity -= new Vector2(speed * Time.deltaTime, 0);
         }
@@ -46,7 +52,7 @@ public class Player2 : MonoBehaviour
     private void ArmMovimento()
     {
 
-        if (Input.GetKey(KeyCode.O))
+        if (Input.GetKey(KeyCode.UpArrow))
         {
             if (angle > -90)
             {
@@ -54,7 +60,7 @@ public class Player2 : MonoBehaviour
                 armTank.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             }
         }
-        if (Input.GetKey(KeyCode.L))
+        if (Input.GetKey(KeyCode.DownArrow))
         {
             if (angle < 0)
             {
